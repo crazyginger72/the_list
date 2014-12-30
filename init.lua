@@ -1,5 +1,6 @@
 --[[
 -- Whitelist mod by ShadowNinja
+--tweaks by crazyginger72
 -- License: WTFPL
 --]]
 
@@ -8,7 +9,7 @@ local admin = minetest.setting_get("name")
 local whitelist = {}
 
 local function load_whitelist()
-	local file, err = io.open(world_path.."/whitelist.txt", "r")
+	local file, err = io.open(world_path.."/thelist.txt", "r")
 	if err then
 		return
 	end
@@ -19,7 +20,7 @@ local function load_whitelist()
 end
 
 local function save_whitelist()
-	local file, err = io.open(world_path.."/whitelist.txt", "w")
+	local file, err = io.open(world_path.."/thelist.txt", "w")
 	if err then
 		return
 	end
@@ -35,30 +36,30 @@ minetest.register_on_prejoinplayer(function(name, ip)
 	if name == "singleplayer" or name == admin or whitelist[name] then
 		return
 	end
-	return "This server is whitelisted and you are not on the whitelist."
+	return "This server is private, you are not getting on!"
 end)
 
 minetest.register_chatcommand("whitelist", {
 	params = "{add|remove} <nick>",
 	help = "Manipulate the whitelist",
-	privs = {ban=true},
+	privs = {server=true},
 	func = function(name, param)
 		local action, whitename = param:match("^([^ ]+) ([^ ]+)$")
 		if action == "add" then
 			if whitelist[whitename] then
 				return false, whitename..
-					" is already on the whitelist."
+					" is already good."
 			end
 			whitelist[whitename] = true
 			save_whitelist()
-			return true, "Added "..whitename.." to the whitelist."
+			return true, "Added "..whitename.." to \"the list\"."
 		elseif action == "remove" then
 			if not whitelist[whitename] then
-				return false, whitename.." is not on the whitelist."
+				return false, whitename.." is not on \"the list\"."
 			end
 			whitelist[whitename] = nil
 			save_whitelist()
-			return true, "Removed "..whitename.." from the whitelist."
+			return true, "Removed "..whitename.." from \"the list\"."
 		else
 			return false, "Invalid action."
 		end
