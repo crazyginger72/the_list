@@ -39,7 +39,7 @@ minetest.register_on_prejoinplayer(function(name, ip)
 	return "This server is private, you are not getting on!"
 end)
 
-minetest.register_chatcommand("whitelist", {
+minetest.register_chatcommand("thelist", {
 	params = "{add|remove} <nick>",
 	help = "Manipulate the whitelist",
 	privs = {server=true},
